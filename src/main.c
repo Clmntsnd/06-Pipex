@@ -1,14 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 12:49:17 by csenand           #+#    #+#             */
-/*   Updated: 2023/04/07 13:14:10 by csenand          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+//TODO 42Header
 
 #include "../include/pipex.h"
 
@@ -25,10 +15,10 @@
 /*
 **	Examples :
 **	Our program should output the same result as the shell command :
-**	- ./pipex file 1 "ls -l" "wc -l" file 2
+**	- Pipex : ./pipex file 1 "ls -l" "wc -l" file 2
 **	- shell : < file 1 ls -l | wc -l > file 2
 **
-**	- ./pipex file 1 "grep a1" "wc -w" file 2
+**	- Pipex : ./pipex file 1 "grep a1" "wc -w" file 2
 **	- shell : < file 1 ls -l | wc -l > file 2
 */
 

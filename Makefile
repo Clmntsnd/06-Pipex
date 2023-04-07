@@ -6,7 +6,7 @@
 #    By: csenand <csenand@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/07 11:12:58 by csenand           #+#    #+#              #
-#    Updated: 2023/04/07 12:59:13 by csenand          ###   ########.fr        #
+#    Updated: 2023/04/07 13:57:48 by csenand          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,18 +57,18 @@ ERASE_LINE 	= 	\033[2K\r
 all : dir $(NAME)
 
 # -- Compile library -- #
-$(NAME): $(OBJS)
+$(NAME) : $(OBJS)
 	@make -C $(LIBFT_DIR)
 	@$(CC) $(CFLAGS) $(SRCS) $(LIBFT) -o $(NAME)
 	@echo "✅ $(GREEN)$(NAME)'s exectuable successfully created.		✅$(RESET)"
 
 # -- Create all files .o (object) from files .c (source code) -- #
-$(OBJS_DIR)%.o: $(SRCS_DIR)%.c $(HEADER)
-	@printf "$(ERASE_LINE)🎛️  $(PURPLE)Compilation of $(YELLOW)$(notdir $<)\r$(RESET)"
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(HEADER)
+	@printf "$(ERASE_LINE)🎛️  $(PURPLE)Compiling $(YELLOW)$(notdir $<)\r$(RESET)"
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 # -- Create directory for *.o files -- #
-dir:
+dir :
 	@mkdir -p $(OBJS_DIR)
 
 # -- Removes objects -- #
@@ -85,8 +85,11 @@ fclean : clean
 	@$(RM) $(NAME)
 	@printf "🗑️  $(CYAN)Executable(s) and archive(s) successfully deleted.$(RESET)	🗑️\n"
 
+exe : $(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all ./pipex
+				
 # -- Removes objects and executable then remakes all -- #
 re : fclean all
 
 # -- Avoid file-target name conflicts -- #
-.PHONY: all bonus clean fclean re
+.PHONY : all bonus clean fclean re
