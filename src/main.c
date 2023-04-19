@@ -22,144 +22,114 @@
 **	- shell : < file 1 ls -l | wc -l > file 2
 */
 
-// int	main()
-// {
-// 	/*	Reminder : there are 3 fds by default, fd[0] (stdin), fd[1] (stdout), fd[2] (stderr)	*/
-// 	int fd[2];
-	
-// 	int pid1;
-
-// 	/*	Security, pipe() will return -1 and the variable errno set to indicate the error. */
-// 	if (pipe(fd) == -1)
-// 		ft_err("Pipe couldn't be created\n"); 
-	
-// 	/* Creation of another process using fork() */
-// 	pid1 = fork();
-
-// 	/*
-// 	**	Security, fork() will return a value of -1 is returned to the parent process,
-// 	**	no child process is created, and the global variable errno is set to indicate the error.
-// 	*/
-// 	if (pid1 < 0)
-// 		ft_err("Can't fork\n");
-
-// 	/*
-// 	**	CHILD Process, if pid1 == 0, that would mean that we are 
-// 	**	in fact in a Child process (child process,s pid are always 0)
-// 	*/
-// 	if (pid1 == 0)
-// 	{
-// 		// dup2(fd[1], STDOUT_FILENO);
-// 		// close(fd[0]);
-// 		// close(fd[1]);
-// 		printf("Welcome to your Child process\n"); 
-// 	}
-// 	// waitpid(pid1, NULL, 0);
-// 	printf("Welcome to Pipex\n");
-// }
+/************************************************************************/
 
 /*
-**	Source : https://youtu.be/NkfIUo_Qq4c
+**	Source : https://youtu.be/VzCawLzITh0
+**	
+**	Multiple pipe setup (n pipes)
 **	The goal is to send from the parent process, a variable x, 
-**	add 5 in a 1st child, add 5 in a 2nd child, and send it back to the parent process.
-**	 
-** 	First we need to create a variable x and send it to the first child.
-**	Then the 1st child will receive x add 5 to it, and send it to the 2nd child.
-**	The 2nd child receive x + 5, and send it to the parent process.
-**	The parent process will receive x + 5 + 5, and isplay it on the termninal. 
+**	add 1 in a 1st child, add 1 in a 2nd child, etc ..., and send it back to the parent process.
+**	
+**	Reminder :
+**	There is n + 1 pipes, where n is the number of processes
+**	
 */
+
+#define PROC_NB	10
+
 int main()
 {
-	//	-- Pipe creation step --
-	int fd[3][2]; //we'll have 3 pipes (fd[3]), that has 3 std fds in each pipes (fd[3][2]).
-	int i = -1; 
-
-	while(++i < 3)
-		if (pipe(fd[i]) == -1)
-			ft_err("Something went wrong during pipe creation\n");
-
-	int pid1 = fork();
-	if (pid1 == -1)
-		ft_err("Something went wrong during pid 1 fork's process\n");
+	/*
+	**	--	Pipe creation step	--
+	** we'll create PROC_NB pipes (i.e. n pipes) (pipes[PROC_NUM + 1]),
+	** that has 3 std fds in each pipes (pipes[PROC_NM + 1][2]).
+	*/
+	int pipes[PROC_NB + 1][2]; 
+	int pids[PROC_NB];
+	int i;
 	
-	//	-- Child process 1	--
-	if(pid1 == 0)
+	// Create the req'd nb of pipes per PROC_NB 
+	i = -1; 
+	while(++i < PROC_NB + 1)
+		if (pipe(pipes[i]) == -1)
+			printf("Something went wrong during pipe[%d] creation\n", i);
+
+	//	--	Child processes	--
+	i = -1;
+	while(++i < PROC_NB)
 	{
-		int x;
-		
-		// Close all unused fd before hand, to not leave any pipes opened for nothing
-		close(fd[0][1]);
-		close(fd[1][0]);
-		close(fd[2][0]);
-		close(fd[2][1]);
+		// Create the req'd nb of childs processes (pids[i])
+		pids[i] = fork();
+		if (pids[i] == -1)
+			printf("Something went wrong during pids[%d] process\n", i);
+	
+		if(pids[i] == 0)
+		{
+			// Close all unused pipes, in order to not leave any pipes opened for nothing
+			int j;
+			j = -1;
+			while (++j < PROC_NB + 1)
+			{
+				if(i != j)
+					close(pipes[j][0]);
+				if(i + 1 != j)
+					close(pipes[j][1]);	
+			}
 
-		if(read(fd[0][0], &x, sizeof(int)) == -1)
-			ft_err("Child 1 error : Couldn't read the fd[0][0]\n");
+			int x;
+			if(read(pipes[i][0], &x, sizeof(int)) == -1)
+				printf("Child [%d] error : Couldn't read from the pipes[%d][0]\n", i, i);
+			printf("Pipe[%d] got %d\n", i, x);
 
-		x += 5;
-		if(write(fd[1][1], &x, sizeof(int)) == -1)
-			ft_err("Child 1 error : Couldn't write to fd[1][1]\n");
-		
-		// Close all used fd
-		close(fd[0][0]);
-		close(fd[1][1]);
-		return(0);
+			// Incrementing x
+			x++;
+			
+			if(write(pipes[i + 1][1], &x, sizeof(int)) == -1)
+				printf("Child [%d] error : Couldn't write to the pipes[%d][1]\n", i, i);
+			printf("Pipe[%d] sent %d\n", i, x);
+			
+			// Close used pipes
+			close(pipes[i][0]);
+			close(pipes[i + 1][1]);
+
+			return(0);
+		}
 	}
 
-	int pid2 = fork();
-	if (pid2 == -1)
-		ft_err("Something went wrong during pid2 fork's process\n");
-	
-	//	-- Child process 2	--
-	if(pid2 == 0)
+	//	--	Main Porcess	--
+	int y = 5; // could be any letter/name for this variable
+
+	// Close all unused pipes, in order to not leave any pipes opened for nothing
+	int j;
+	j = -1;
+	while (++j < PROC_NB + 1)
 	{
-		int x;
-		
-		// Close all unused fd before hand, to not leave any pipes opened for nothing
-		close(fd[0][0]);
-		close(fd[0][1]);
-		close(fd[1][1]);
-		close(fd[2][0]);
-
-		if(read(fd[1][0], &x, sizeof(int)) == -1)
-			ft_err("Child 2 error : Couldn't read the fd[1][0]\n");
-
-		x += 5;
-		if(write(fd[2][1], &x, sizeof(int)) == -1)
-			ft_err("Child 2 error : Couldn't write to fd[2][1]\n");
-		
-		// Close all used fd
-		close(fd[1][0]);
-		close(fd[2][1]);
-		return(0);
+		if(j != PROC_NB)
+			close(pipes[j][0]);
+		if(j != 0)
+			close(pipes[j][1]);	
 	}
 
-	//	--	Parent process	-- 
-	int x;
-	printf("Input nbr: ");
-	scanf("%d", &x);
+	// Printing what the Main process sent
+	printf("Main process sent %d\n", y);
 
-	// Close all unused fd before hand, to not leave any pipes opened for nothing
-	close(fd[0][0]);
-	close(fd[1][0]);
-	close(fd[1][1]);
-	close(fd[2][1]);
+	if(write(pipes[0][1], &y, sizeof(int)) == -1)
+		printf("Main process error : Couldn't write to pipe[0][1]\n");
+	if(read(pipes[PROC_NB][0], &y, sizeof(int)) == -1)
+		printf("Parent process error : Couldn't read the pipes[2][0]\n");
 
-	if(write(fd[0][1], &x, sizeof(int)) == -1)
-			ft_err("Parent process error : Couldn't write to fd[0][1]\n");
+	// Printing the final result (i.e what the Main process received from all the childs processes)
+	printf("The final result is %d\n", y);
 	
-	if(read(fd[2][0], &x, sizeof(int)) == -1)
-			ft_err("Parent process error : Couldn't read the fd[2][0]\n");
-	//printing result
-	printf("Result is %d\n", x);
+	// Close used pipes
+	close(pipes[0][1]);
+	close(pipes[2][0]);
+
+	// Wait for all pids/childs to do their stuff
+	i = - 1;
+	while(++i < PROC_NB)
+		wait(NULL);
 	
-	// Close all used fd
-	close(fd[0][1]);
-	close(fd[2][0]);
-
-	// Wait for all pids to do their stuff
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
-
 	return (0);
 }
