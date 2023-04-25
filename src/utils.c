@@ -29,6 +29,7 @@ void	ft_init_data(t_data *data, int ac, char **av, char **envp)
 	(void)av;
 	(void)ac;
 	// data->av = av;
+	data->pipes_nb = ac - 2;
 	data->envp = envp;
 	data->cmd_paths = ft_get_path(data->envp);
 	// data->inFile = open(av[1], O_RDONLY);
@@ -38,13 +39,3 @@ void	ft_init_data(t_data *data, int ac, char **av, char **envp)
 	// if(data->outFile == -1)
 	// 	ft_err("Error ! Couldn't create the output file", data);
 }
-
-// pid_t	ft_create_pipes()
-// {
-// 	int pipes[3][2];
-// 	int i = -1; 
-
-// 	while(++i < 3)
-// 		if (pipe(pipes[i]) == -1)
-// 			ft_err("Something went wrong during pipe creation: ");
-// }

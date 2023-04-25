@@ -6,7 +6,7 @@
 #    By: csenand <csenand@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/07 11:12:58 by csenand           #+#    #+#              #
-#    Updated: 2023/04/18 12:02:17 by csenand          ###   ########.fr        #
+#    Updated: 2023/04/25 14:06:19 by csenand          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,9 @@ RM			=	rm -rf
 # -- SRC Files -- #
 SRCS_DIR	=	./src/
 SRCS_LST	= 	main.c \
-				utils.c 
+				utils.c \
+				pipess.c \
+				childs.c 
 				
 				
 SRCS		=	$(addprefix $(SRCS_DIR), $(SRCS_LST))

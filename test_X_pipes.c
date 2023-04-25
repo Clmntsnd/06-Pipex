@@ -10,6 +10,11 @@
 **	
 */
 
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <fcntl.h>
+
 #define PROC_NB	3
 
 int main()
@@ -50,7 +55,7 @@ int main()
 				if(i + 1 != j)
 					close(pipes[j][1]);	
 			}
-
+			
 			int x;
 			if(read(pipes[i][0], &x, sizeof(int)) == -1)
 				printf("Child [%d] error : Couldn't read from the pipes[%d][0]\n", i, i);

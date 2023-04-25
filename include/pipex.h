@@ -18,8 +18,9 @@ typedef struct s_data
 	char	**cmd_paths;
 	int		inFile;
 	int		outFile;
-	int		pipe[2];
-	pid_t	pid[2];
+	int		pipes_nb;
+	int		*pipes;
+	pid_t	*pids;
 }			t_data;
 
 /*
@@ -31,5 +32,8 @@ typedef struct s_data
 */
 void 	ft_err(char *msg, t_data *data);
 void	ft_init_data(t_data *data, int ac, char **av, char **envp);
+void 	ft_create_pipes(t_data *data);
+void	ft_child_process(t_data data);
+
 
 #endif
