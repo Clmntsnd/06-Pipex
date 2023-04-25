@@ -29,14 +29,18 @@ int	main(int ac, char **av, char **envp)
 	t_data	 *data;
 
 	data = NULL;
-	if(ac != 5)
-		ft_err("Too many/few arguments", data);
+	// if(ac != 5)
+	// 	ft_err("Too many/few arguments", data);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (1);
 	ft_init_data(data, ac, av, envp);
+	
+	//Printing What's inside 'PATH' variable
 	int j = 0;
 	while(data->cmd_paths[j])
 		printf("%s\n", data->cmd_paths[j++]);
+	
+	free(data);
 	return (0);
 }

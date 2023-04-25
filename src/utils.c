@@ -33,10 +33,10 @@ void	ft_init_data(t_data *data, int ac, char **av, char **envp)
 	data->cmd_paths = ft_get_path(data->envp);
 	// data->inFile = open(av[1], O_RDONLY);
 	// if(data->inFile == -1)
-	// 	ft_err("Error ! Couldn't open the input file: ", data);
+	// 	ft_err("Error ! Couldn't open the input file", data);
 	// data->outFile = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	// if(data->outFile == -1)
-	// 	ft_err("Error ! Couldn't create the output file: ", data);
+	// 	ft_err("Error ! Couldn't create the output file", data);
 }
 
 // pid_t	ft_create_pipes()
