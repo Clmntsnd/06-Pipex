@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: csenand <csenand@student.42.fr>            +#+  +:+       +#+         #
+#    By: loulou <loulou@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/07 11:12:58 by csenand           #+#    #+#              #
-#    Updated: 2023/04/25 14:06:19 by csenand          ###   ########.fr        #
+#    Updated: 2023/04/25 17:48:59 by loulou           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ RM			=	rm -rf
 SRCS_DIR	=	./src/
 SRCS_LST	= 	main.c \
 				utils.c \
-				pipess.c \
+				pipes.c \
 				childs.c 
 				
 				

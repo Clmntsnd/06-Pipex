@@ -35,8 +35,8 @@ int	main(int ac, char **av, char **envp)
 	if (!data)
 		return (1);
 	ft_init_data(data, ac, av, envp);
-	ft_create_
-
+	// ft_create_pipes(data);
+	
 	//Printing What's inside 'PATH' variable
 	int j = 0;
 	while(data->cmd_paths[j])
