@@ -27,7 +27,9 @@
 int	main(int ac, char **av, char **envp)
 {
 	t_data	 *data;
-
+	
+	// if (!envp)
+	// 	exit(1);
 	data = NULL;
 	// if(ac != 5)
 	// 	ft_err("Too many/few arguments", data);

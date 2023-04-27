@@ -19,4 +19,4 @@
 // 		if (data->pids[i] == 0)
 // 			ft_child_process(data);
 // 	}
-// }
+// } 
