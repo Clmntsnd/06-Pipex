@@ -31,18 +31,28 @@ int	main(int ac, char **av, char **envp)
 	// if (!envp)
 	// 	exit(1);
 	data = NULL;
-	// if(ac != 5)
-	// 	ft_err("Too many/few arguments", data);
+	// if(ac < 5)
+	// 	ft_err("Too few arguments", data);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (1);
 	ft_init_data(data, ac, av, envp);
-	// ft_create_pipes(data);
+
+	printf("Main - Pipes creation starts\n");
+	if(ft_create_pipes(data) == 0)
+		printf("Only one pipe\n");
 	
-	//Printing What's inside 'PATH' variable
+	//Printing pipe numbers per the number of cmd typed
 	int j = 0;
-	while(data->cmd_paths[j])
-		printf("%s\n", data->cmd_paths[j++]);
+	while(data->pipes[j])
+		printf("Pipe[%d]\n", j++);
+	
+	printf("Main - Pipes creation ends\n");
+
+	//Printing What's inside 'PATH' variable
+	// int j = 0;
+	// while(data->cmd_paths[j])
+	// 	printf("%s\n", data->cmd_paths[j++]);
 	
 	free(data);
 	return (0);

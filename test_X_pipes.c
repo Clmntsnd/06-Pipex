@@ -21,7 +21,7 @@ int main()
 {
 	/*
 	**	--	Pipe creation step	--
-	** we'll create PROC_NB pipes (i.e. n pipes) (pipes[PROC_NUM + 1]),
+	** we'll create pipes according the nd of processes (i.e. n pipes) (pipes[PROC_NUM + 1]),
 	** that has 3 std fds in each pipes (pipes[PROC_NM + 1][2]).
 	*/
 	int pipes[PROC_NB + 1][2]; 
