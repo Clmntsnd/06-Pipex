@@ -48,10 +48,10 @@ void	ft_init_data(t_data *data, int ac, char **av, char **envp)
 	(void)av;
 	// data->av = av;
 
-	// With 2 cmds (aka processes), we need 'cmds + 1' pipes, so 3 pipes
+	// With 2 cmds (aka processes), we need 'cmds - 1' pipes, so 3 pipes
 	// I.E. with X cmds, we need 'X cmds + 1' pipes
 	data->cmd_nb = ac - 3;
-	data->pipes_nb = data->cmd_nb + 1;
+	data->pipes_nb = data->cmd_nb - 1;
 	data->envp = envp;
 	data->pipes = NULL;
 

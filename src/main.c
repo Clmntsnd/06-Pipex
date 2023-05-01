@@ -38,21 +38,21 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	ft_init_data(data, ac, av, envp);
 
-	printf("Main - Pipes creation starts\n");
-	if(ft_create_pipes(data) == 0)
-		printf("Only one pipe\n");
-	
-	//Printing pipe numbers per the number of cmd typed
-	int j = 0;
-	while(data->pipes[j])
-		printf("Pipe[%d]\n", j++);
+	// printf("Main - Pipes creation starts\n");
+	// if(ft_create_pipes(data) == 0)
+	// 	printf("Only one pipe\n");
+
+	// //Printing pipe numbers per the number of cmd typed
+	// int j = 0;
+	// while(data->pipes[j])
+	// 	printf("Pipe[%p]\n", data->pipes[j++]);
 	
 	printf("Main - Pipes creation ends\n");
 
 	//Printing What's inside 'PATH' variable
-	// int j = 0;
-	// while(data->cmd_paths[j])
-	// 	printf("%s\n", data->cmd_paths[j++]);
+	int j = 0;
+	while(data->cmd_paths[j])
+		printf("%s\n", data->cmd_paths[j++]);
 	
 	free(data);
 	return (0);
