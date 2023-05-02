@@ -10,6 +10,11 @@ void ft_err(char *msg, t_data *data)
 	exit(1);
 }
 
+void	ft_close_pipes()
+{
+	
+}
+
 char	**ft_get_path(char **envp)
 {
 	int i;

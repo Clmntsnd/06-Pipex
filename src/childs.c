@@ -4,9 +4,12 @@ void	ft_make_pids(t_data *data)
 {
 	int i;
 
-	if (data->cmd_paths)
+	printf("Pids starts\n");
+	data->pids = ft_calloc(data->cmd_nb, sizeof(pid_t *));
+	if (!data->cmd_paths)
 		return ;
 	i = -1;
+	// int j = 0;
 	while(++i < data->cmd_nb)
 	{
 		data->pids[i] = fork();
@@ -18,47 +21,80 @@ void	ft_make_pids(t_data *data)
 	}
 	close(data->inFile);
 	close(data->outFile);
+	printf("Pids ends\n");
 }
 
 
-char *ft_cmd_path(char **path, char *cmds)
+char *ft_cmd_path(t_data *data, char *cmds)
 {
-	if (access(path, X_OK) == 0)
+	char 	*path;
+	int		i;
+
+	path = ft_strdup(cmds);
+	if (access(path, X_OK | F_OK) == 0)
 		return (path);
+	path = ft_strjoin("./", cmds);
+	if (!path)
+		return (NULL);
+	if (access(path, X_OK | F_OK) == 0)
+		return (path);
+	free(path);
+	i = -1;
+	while(data->cmd_paths[++i])
+	{
+		path = ft_strjoin(data->cmd_paths[i], cmds);
+		if (access(path, X_OK | F_OK) == 0)
+			return (path);
+		free(path);
+	}
+	ft_err("Error ! Can't find path to program:", data);
+	return (NULL);
 }
 
 void	ft_run_cmd(t_data *data)
 {
 	char	*path;
-	char	**cmd_args;
+	char	**cmds;
 
 	// It splits the string at av[2] which is the cmd1 (e.g cat -e)
-	cmd_args = ft_split(data->av[data->index], ' ');
-	path = ft_cmd_path(data->cmd_paths, cmd_args[0]); //TODO need to implement this fct
-	execve(path, cmd_args, data->envp);
+	cmds = ft_split(data->av[data->index + 2], ' ');
+	path = ft_cmd_path(data, cmds[0]);
+	if(execve(path, cmds, data->envp) < 0)
+		ft_err("Error ! Something went wrong while executing: ", data);
+	
 }
 
 void	ft_child_process(t_data *data, int i)
 {
-	dup2(data->inFile, STDIN_FILENO);
-	data->index = i + 2;
+	printf("Child starts\n");
+	data->index = i;
 	if (data->cmd_nb == 1)
 	{
+		dup2(data->inFile, STDIN_FILENO);
 		dup2(data->outFile, STDOUT_FILENO);
 		close(data->inFile);
 		close(data->outFile);
 		ft_run_cmd(data);
+		// printf("toto\n");
+		// fprintf(stderr, "%s\n", "allo");
 	}
 	else
 	{
-		dup2(data->pipes[i][0], STDIN_FILENO);
-		if (data->index == data->cmd_nb)
+		fprintf(stderr, "i = %d\n", i);
+		if (data->index == 0)
+			dup2(data->inFile, STDIN_FILENO);
+		else 
+			dup2(data->pipes[i - 1][0], STDIN_FILENO);
+		if (data->index == data->cmd_nb - 1)
 			dup2(data->outFile, STDOUT_FILENO);
 		else
-			dup2(data->pipes[i + 1][1], STDOUT_FILENO);
+			dup2(data->pipes[i][1], STDOUT_FILENO);
 		close(data->inFile);
 		close(data->outFile);
-		data->index++;
+		// ft_close_pipes(); // TODO implement this ft
+		// printf("toto %d\n", i);
 		ft_run_cmd(data);
+		// fprintf(stderr, "%s\n", "allo 2");
 	}
+	// exit (127);
 }

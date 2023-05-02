@@ -72,6 +72,7 @@ int main()
 			close(pipes[i][0]);
 			close(pipes[i + 1][1]);
 
+
 			return(0);
 		}
 	}

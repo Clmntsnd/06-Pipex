@@ -7,11 +7,11 @@ int	ft_create_pipes(t_data *data)
 	if (data->cmd_nb < 1)
 		return (0);
 	// Allocates memory accordingly
-	data->pipes = ft_calloc(data->cmd_nb, sizeof(int *));
+	data->pipes = ft_calloc(data->pipes_nb, sizeof(int *));
 	if (!data->pipes)
 		ft_err("Something went wrong during calloc", data);
 	i = -1;
-	while(++i < data->cmd_nb)
+	while(++i < data->pipes_nb)
 	{	
 		data->pipes[i] = ft_calloc(2, sizeof(int));
 		if (!data->pipes[i])

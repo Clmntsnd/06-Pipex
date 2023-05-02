@@ -40,6 +40,7 @@ int	main(int ac, char **av, char **envp)
 	ft_create_pipes(data);
 	ft_make_pids(data);
 
+
 	// printf("Main - Pipes creation starts\n");
 	// if(ft_create_pipes(data) == 0)
 	// 	printf("Only one pipe\n");
@@ -49,12 +50,11 @@ int	main(int ac, char **av, char **envp)
 	// while(data->pipes[j])
 	// 	printf("Pipe[%p]\n", data->pipes[j++]);
 	
-	printf("Main - Pipes creation ends\n");
 
 	//Printing What's inside 'PATH' variable
-	int j = 0;
-	while(data->cmd_paths[j])
-		printf("%s\n", data->cmd_paths[j++]);
+	// int j = 0;
+	// while(data->cmd_paths[j])
+	// 	printf("%s\n", data->cmd_paths[j++]);
 	
 	free(data);
 	return (0);
