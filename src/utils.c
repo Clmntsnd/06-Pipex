@@ -26,7 +26,8 @@ char	**ft_get_path(char **envp)
 	while(ft_strncmp(envp[i], "PATH=", 5))
 		i++;
 	cmd_paths = ft_split(&envp[i][5], ':');
-
+	if (!cmd_paths)
+		return (NULL);
 	/*
 	**	Step 2, it finds the number of path variables contained in cmd_paths,
 	**	then by allocating the same memory as cmd_paths, 
@@ -36,6 +37,8 @@ char	**ft_get_path(char **envp)
 	while(cmd_paths[i])
 		i++;
 	new_cmd_paths = ft_calloc(i + 1, sizeof(char *));
+	if (!new_cmd_paths)
+		return (NULL);
 	i = -1;
 	while (cmd_paths[++i])
 		new_cmd_paths[i] = ft_strjoin(cmd_paths[i], "/");
@@ -45,23 +48,25 @@ char	**ft_get_path(char **envp)
 
 void	ft_init_data(t_data *data, int ac, char **av, char **envp)
 {
-	(void)av;
-	// data->av = av;
-
-	// With 2 cmds (aka processes), we need 'cmds - 1' pipes, so 3 pipes
-	// I.E. with X cmds, we need 'X cmds + 1' pipes
+	// (void)av;
+	data->av = av;
+	data->ac = ac;
+	// With 2 cmds (aka processes), we need 'cmds - 1' pipes, so 1 pipe
+	// I.E. with X cmds, we need 'X cmds - 1' pipes
+	// this is because we will use dup2 ft instead of making pipes between the main and the childs
 	data->cmd_nb = ac - 3;
 	data->pipes_nb = data->cmd_nb - 1;
 	data->envp = envp;
 	data->pipes = NULL;
+	// data->index = 1; // should be equal to 2 (i.e. av[2]), but in ft_child_procces it's pre-incremented 
 
 	// In this ft, we isolate the 'PATH' variable in the environment (envp)
 	data->cmd_paths = ft_get_path(data->envp);
 		
-	// data->inFile = open(av[1], O_RDONLY);
-	// if(data->inFile == -1)
-	// 	ft_err("Error ! Couldn't open the input file", data);
-	// data->outFile = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
-	// if(data->outFile == -1)
-	// 	ft_err("Error ! Couldn't create the output file", data);
+	data->inFile = open(av[1], O_RDONLY);
+	if(data->inFile == -1)
+		ft_err("Error ! Couldn't open the input file", data);
+	data->outFile = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if(data->outFile == -1)
+		ft_err("Error ! Couldn't create the output file", data);
 }

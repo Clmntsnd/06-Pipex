@@ -13,11 +13,13 @@
 
 typedef struct s_data
 {
+	int 	ac;
 	char	**av;
 	char	**envp;
 	char	**cmd_paths;
 	int		inFile;
 	int		outFile;
+	int		index; // cmd index (i.e. av[2], av[3], etc ...)
 	int		pipes_nb;
 	int		cmd_nb;
 	int		**pipes;
@@ -27,6 +29,7 @@ typedef struct s_data
 void 	ft_err(char *msg, t_data *data);
 void	ft_init_data(t_data *data, int ac, char **av, char **envp);
 int 	ft_create_pipes(t_data *data);
-// void	ft_child_process(t_data *data);
+void	ft_child_process(t_data *data, int i);
+void	ft_make_pids(t_data *data);
 
 #endif

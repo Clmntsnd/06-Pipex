@@ -37,6 +37,8 @@ int	main(int ac, char **av, char **envp)
 	if (!data)
 		return (1);
 	ft_init_data(data, ac, av, envp);
+	ft_create_pipes(data);
+	ft_make_pids(data);
 
 	// printf("Main - Pipes creation starts\n");
 	// if(ft_create_pipes(data) == 0)
