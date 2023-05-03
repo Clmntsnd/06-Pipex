@@ -10,10 +10,19 @@ void ft_err(char *msg, t_data *data)
 	exit(1);
 }
 
-void	ft_close_pipes()
-{
-	
-}
+// void	ft_close_pipes(t_data *data, int i)
+// {
+// 	int	j;
+
+// 	j = -1;
+// 	while (++j <= data->pipes_nb)
+// 	{
+// 		if(i != j)
+// 			close(data->pipes[j][0]);
+// 		if(i - 1 != j)
+// 			close(data->pipes[j][1]);	
+// 	}
+// }
 
 char	**ft_get_path(char **envp)
 {

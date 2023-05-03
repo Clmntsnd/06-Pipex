@@ -82,16 +82,26 @@ void	ft_child_process(t_data *data, int i)
 	{
 		fprintf(stderr, "i = %d\n", i);
 		if (data->index == 0)
+		{
 			dup2(data->inFile, STDIN_FILENO);
-		else 
-			dup2(data->pipes[i - 1][0], STDIN_FILENO);
-		if (data->index == data->cmd_nb - 1)
-			dup2(data->outFile, STDOUT_FILENO);
+			close(data->inFile);
+		}
 		else
+		{
+			dup2(data->pipes[i - 1][0], STDIN_FILENO);
+			close(data->pipes[i - 1][0]);
+		} 
+		if (data->index == data->cmd_nb - 1)
+		{
+			dup2(data->outFile, STDOUT_FILENO);
+			close(data->outFile);
+		}
+		else
+		{
 			dup2(data->pipes[i][1], STDOUT_FILENO);
-		close(data->inFile);
-		close(data->outFile);
-		// ft_close_pipes(); // TODO implement this ft
+			close(data->pipes[i][1]);
+		}
+		// ft_close_pipes(data, i); // TODO implement this ft
 		// printf("toto %d\n", i);
 		ft_run_cmd(data);
 		// fprintf(stderr, "%s\n", "allo 2");

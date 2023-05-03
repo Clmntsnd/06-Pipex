@@ -30,6 +30,7 @@ void 	ft_err(char *msg, t_data *data);
 void	ft_init_data(t_data *data, int ac, char **av, char **envp);
 int 	ft_create_pipes(t_data *data);
 void	ft_child_process(t_data *data, int i);
+void	ft_close_pipes(t_data *data, int i);
 void	ft_make_pids(t_data *data);
 
 #endif

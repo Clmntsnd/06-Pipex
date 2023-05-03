@@ -39,6 +39,7 @@ int	main(int ac, char **av, char **envp)
 	ft_init_data(data, ac, av, envp);
 	ft_create_pipes(data);
 	ft_make_pids(data);
+	printf("Main - End of program\n");
 
 
 	// printf("Main - Pipes creation starts\n");
@@ -55,7 +56,10 @@ int	main(int ac, char **av, char **envp)
 	// int j = 0;
 	// while(data->cmd_paths[j])
 	// 	printf("%s\n", data->cmd_paths[j++]);
-	
+	// TODO Implement waitpids/wait 
+	int i = - 1;
+	while(++i < data->cmd_nb)
+		wait(NULL);
 	free(data);
 	return (0);
 }
