@@ -6,7 +6,7 @@
 /*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:58:38 by csenand           #+#    #+#             */
-/*   Updated: 2023/05/03 15:05:06 by csenand          ###   ########.fr       */
+/*   Updated: 2023/05/03 17:17:42 by csenand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 int	main(int ac, char **av, char **envp)
 {
 	t_data	*data;
-	int		i;
+	// int		i;
 
 	data = NULL;
 	if (!(*envp))
@@ -50,9 +50,15 @@ int	main(int ac, char **av, char **envp)
 	ft_init_data(data, ac, av, envp);
 	ft_create_pipes(data);
 	ft_make_pids(data);
-	i = -1;
+
+	// Printing What's inside 'PATH' variable
+	// int j = 0;
+	// while(data->cmd_paths[j])
+	// 	printf("%s\n", data->cmd_paths[j++]);
+
+	int i = -1;
 	while (++i < data->cmd_nb)
-		wait(NULL);
+		waitpid(data->pids[i], NULL, 0);
 	ft_free_data(data);
 	return (0);
 }

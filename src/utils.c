@@ -6,7 +6,7 @@
 /*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:58:55 by csenand           #+#    #+#             */
-/*   Updated: 2023/05/03 15:07:56 by csenand          ###   ########.fr       */
+/*   Updated: 2023/05/03 16:57:57 by csenand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,11 @@ char	**ft_get_path(char **envp, int i)
 	char	**cmd_paths;
 	char	**new_cmd_paths;
 
-	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5 != 0))
+	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5) != 0)
 		i++;
 	if (!envp[i])
 	{
+		printf("coucou\n");
 		new_cmd_paths = ft_calloc(1, sizeof(char *));
 		new_cmd_paths[0] = ft_calloc(1, sizeof(char));
 		return (new_cmd_paths);
@@ -95,10 +96,10 @@ void	ft_init_data(t_data *data, int ac, char **av, char **envp)
 	data->envp = envp;
 	data->pipes = NULL;
 	data->cmd_paths = ft_get_path(data->envp, 0);
+	data->outFile = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	data->inFile = open(av[1], O_RDONLY);
 	if (data->inFile == -1)
 		ft_err("Error ! Couldn't open the input file", data);
-	data->outFile = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (data->outFile == -1)
 		ft_err("Error ! Couldn't create the output file", data);
 }

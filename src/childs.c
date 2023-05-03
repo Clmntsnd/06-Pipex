@@ -6,7 +6,7 @@
 /*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:58:50 by csenand           #+#    #+#             */
-/*   Updated: 2023/05/03 15:04:10 by csenand          ###   ########.fr       */
+/*   Updated: 2023/05/03 16:45:51 by csenand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_cmd_path(t_data *data, char *cmds)
 			return (path);
 		free(path);
 	}
-	ft_err("Error ! Can't find path to program:", data);
+	ft_err("Error ! Can't find path to program", data);
 	path = NULL;
 	return (path);
 }

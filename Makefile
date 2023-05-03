@@ -6,7 +6,7 @@
 #    By: csenand <csenand@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/07 11:12:58 by csenand           #+#    #+#              #
-#    Updated: 2023/05/02 11:03:30 by csenand          ###   ########.fr        #
+#    Updated: 2023/05/03 16:25:44 by csenand          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ NAME		=	pipex
 
 # -- Compilation Flag -- #
 CC			=	gcc
-# CFLAGS		=	-Wall -Wextra -Werror
-CFLAGS		=	-Wall -Wextra -Werror -Wunreachable-code -fsanitize=address -g
+CFLAGS		=	-Wall -Wextra -Werror -g
+# CFLAGS		=	-Wall -Wextra -Werror -Wunreachable-code -fsanitize=address -g
 
 # -- Remove -- #
 RM			=	rm -rf
