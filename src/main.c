@@ -1,4 +1,14 @@
-//TODO 42Header
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/03 14:58:38 by csenand           #+#    #+#             */
+/*   Updated: 2023/05/03 15:05:06 by csenand          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/pipex.h"
 
@@ -26,40 +36,23 @@
 
 int	main(int ac, char **av, char **envp)
 {
-	t_data	 *data;
-	
-	// if (!envp)
-	// 	exit(1);
+	t_data	*data;
+	int		i;
+
 	data = NULL;
-	// if(ac < 5)
-	// 	ft_err("Too few arguments", data);
+	if (!(*envp))
+		ft_err("No environment found", data);
+	if (ac < 4)
+		ft_err("Too few arguments", data);
 	data = ft_calloc(1, sizeof(t_data));
 	if (!data)
 		return (1);
 	ft_init_data(data, ac, av, envp);
 	ft_create_pipes(data);
 	ft_make_pids(data);
-	printf("Main - End of program\n");
-
-
-	// printf("Main - Pipes creation starts\n");
-	// if(ft_create_pipes(data) == 0)
-	// 	printf("Only one pipe\n");
-
-	// //Printing pipe numbers per the number of cmd typed
-	// int j = 0;
-	// while(data->pipes[j])
-	// 	printf("Pipe[%p]\n", data->pipes[j++]);
-	
-
-	//Printing What's inside 'PATH' variable
-	// int j = 0;
-	// while(data->cmd_paths[j])
-	// 	printf("%s\n", data->cmd_paths[j++]);
-	// TODO Implement waitpids/wait 
-	int i = - 1;
-	while(++i < data->cmd_nb)
+	i = -1;
+	while (++i < data->cmd_nb)
 		wait(NULL);
-	free(data);
+	ft_free_data(data);
 	return (0);
 }
