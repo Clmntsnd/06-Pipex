@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
+/*   By: loulou <loulou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:58:50 by csenand           #+#    #+#             */
-/*   Updated: 2023/05/03 16:45:51 by csenand          ###   ########.fr       */
+/*   Updated: 2023/05/03 21:51:35 by loulou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	ft_make_pids(t_data *data)
 		if (data->pids[i] == 0)
 			ft_child_process(data, i);
 	}
-	close(data->inFile);
-	close(data->outFile);
+	close(data->input);
+	close(data->output);
 	ft_close_pipes(data);
 }
 
@@ -80,27 +80,16 @@ void	ft_run_cmd(t_data *data)
 void	ft_child_process(t_data *data, int i)
 {
 	data->index = i;
-	if (data->cmd_nb == 1)
-	{
-		dup2(data->inFile, STDIN_FILENO);
-		dup2(data->outFile, STDOUT_FILENO);
-		close(data->inFile);
-		close(data->outFile);
-		ft_run_cmd(data);
-	}
+	if (data->index == 0)
+		dup2(data->input, STDIN_FILENO);
 	else
-	{
-		if (data->index == 0)
-			dup2(data->inFile, STDIN_FILENO);
-		else
-			dup2(data->pipes[i - 1][0], STDIN_FILENO);
-		if (data->index == data->cmd_nb - 1)
-			dup2(data->outFile, STDOUT_FILENO);
-		else
-			dup2(data->pipes[i][1], STDOUT_FILENO);
-		close(data->inFile);
-		close(data->outFile);
-		ft_close_pipes(data);
-		ft_run_cmd(data);
-	}
+		dup2(data->pipes[i - 1][0], STDIN_FILENO);
+	if (data->index == data->cmd_nb - 1)
+		dup2(data->output, STDOUT_FILENO);
+	else
+		dup2(data->pipes[i][1], STDOUT_FILENO);
+	close(data->input);
+	close(data->output);
+	ft_close_pipes(data);
+	ft_run_cmd(data);
 }
