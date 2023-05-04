@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loulou <loulou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:58:50 by csenand           #+#    #+#             */
-/*   Updated: 2023/05/03 21:51:35 by loulou           ###   ########.fr       */
+/*   Updated: 2023/05/04 10:28:54 by csenand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,16 @@ void	ft_child_process(t_data *data, int i)
 {
 	data->index = i;
 	if (data->index == 0)
+	{
+		if (data->input == -1)
+		{
+			ft_close_pipes(data);
+			close(data->input);
+			close(data->output);
+			ft_err("Couldn't open the input file", data);
+		}
 		dup2(data->input, STDIN_FILENO);
+	}
 	else
 		dup2(data->pipes[i - 1][0], STDIN_FILENO);
 	if (data->index == data->cmd_nb - 1)

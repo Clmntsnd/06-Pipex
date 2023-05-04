@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: loulou <loulou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: csenand <csenand@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 14:58:55 by csenand           #+#    #+#             */
-/*   Updated: 2023/05/03 21:49:45 by loulou           ###   ########.fr       */
+/*   Updated: 2023/05/04 10:25:45 by csenand          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	ft_init_data(t_data *data, int ac, char **av, char **envp)
 	data->pipes = NULL;
 	data->cmd_paths = ft_get_path(data->envp, 0);
 	data->output = open(av[ac - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
-	data->input = open(av[1], O_RDONLY);
+	data->input = open(data->av[1], O_RDONLY);
 	if (data->output == -1)
 		ft_err("Error ! Couldn't create the output file", data);
 }
